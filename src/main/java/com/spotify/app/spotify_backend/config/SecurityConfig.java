@@ -11,16 +11,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable() // Deshabilitar CSRF para facilitar pruebas
+            .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF solo para pruebas locales
             .authorizeHttpRequests(auth -> auth
-                // Permitir acceso público a los endpoints de autenticación
                 .requestMatchers("/auth/spotify/**").permitAll()
-                // Permitir acceso al endpoint de top artists
                 .requestMatchers("/spotify/me/top/artists").permitAll()
-                // Bloquear todos los demás endpoints
                 .anyRequest().authenticated()
-            )
-            .formLogin().disable(); // Deshabilitar el inicio de sesión por defecto
+            );
 
         return http.build();
     }

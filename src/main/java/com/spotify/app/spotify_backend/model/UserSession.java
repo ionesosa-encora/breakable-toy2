@@ -1,10 +1,13 @@
 package com.spotify.app.spotify_backend.model;
 
-public class UserTokens {
-    private String accessToken;
-    private String refreshToken;
+/**
+ * Modelo para representar una sesión activa de un usuario.
+ */
+public class UserSession {
+    private String accessToken;   // Token de acceso para la API de Spotify
+    private String refreshToken;  // Token para refrescar el accessToken
 
-    public UserTokens(String accessToken, String refreshToken) {
+    public UserSession(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }

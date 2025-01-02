@@ -1,45 +1,60 @@
 package com.spotify.app.spotify_backend.controller;
 
+import com.spotify.app.spotify_backend.dto.TopArtistsResponseDTO;
+import com.spotify.app.spotify_backend.model.UserSession;
+import com.spotify.app.spotify_backend.service.SpotifyApiClient;
 import com.spotify.app.spotify_backend.service.TokenService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
 
 @RestController
-@RequestMapping("/spotify")
 public class SpotifyController {
+
+    @Autowired
+    private SpotifyApiClient spotifyApiClient;
 
     @Autowired
     private TokenService tokenService;
 
-    // Endpoint para obtener los 10 artistas principales
-    @GetMapping("/me/top/artists")
-    public ResponseEntity<String> getTopArtists(@RequestHeader("user-id") String userId) {
-        // Obtener el accessToken del TokenService
-        String accessToken = tokenService.getTokens(userId).getAccessToken();
-
-        // Verificar si el token existe
-        if (accessToken == null) {
-            return ResponseEntity.status(401).body("Access token no encontrado para el usuario: " + userId);
+    @GetMapping("/spotify/me/top/artists")
+    public ResponseEntity<?> getTopArtists(HttpServletRequest request) {
+        // Obtener el UUID desde las cookies
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            return ResponseEntity.status(401).body("No session cookies found");
         }
 
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "https://api.spotify.com/v1/me/top/artists?limit=10"; // Limitar a 10 artistas
+        String uuid = Arrays.stream(cookies)
+                .filter(cookie -> "sessionUUID".equals(cookie.getName()))
+                .map(Cookie::getValue)
+                .findFirst()
+                .orElse(null);
 
-        // Configurar las cabeceras con el token de acceso
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
+        if (uuid == null) {
+            return ResponseEntity.status(401).body("Session UUID is missing");
+        }
 
-        HttpEntity<Void> request = new HttpEntity<>(headers);
+        // Obtener la sesión desde el TokenService
+        UserSession session = tokenService.getSession(uuid);
+        if (session == null) {
+            return ResponseEntity.status(401).body("Invalid session. Please login again.");
+        }
 
-        // Hacer la solicitud a Spotify
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
+        // Obtener el accessToken de la sesión
+        String accessToken = session.getAccessToken();
 
-        // Devolver la respuesta de Spotify
-        return ResponseEntity.ok(response.getBody());
+        // Llamar al cliente de la API para obtener los artistas principales
+        try {
+            TopArtistsResponseDTO topArtists = spotifyApiClient.getTopArtists(accessToken);
+            return ResponseEntity.ok(topArtists);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching top artists: " + e.getMessage());
+        }
     }
 }
