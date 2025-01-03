@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -28,7 +29,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
+        
+        // Permitir acceso sin restricciones a las rutas de login y callback
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith("/auth/spotify/login") || requestURI.startsWith("/auth/spotify/callback")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
         // Obtener el UUID desde las cookies
         String uuid = null;
         if (request.getCookies() != null) {
@@ -40,8 +48,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
 
         if (uuid == null) {
-            System.out.println("No UUID found in cookies for request: " + request.getRequestURI());
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Usamos SC_UNAUTHORIZED directamente
+            response.getWriter().write("Unauthorized: No session UUID found");
             return;
         }
 
@@ -49,18 +57,26 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         UserSession session = tokenService.getSession(uuid);
 
         if (session == null) {
-            System.out.println("No session found for UUID: " + uuid);
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Usamos SC_UNAUTHORIZED directamente
+            response.getWriter().write("Unauthorized: Invalid session");
             return;
         }
 
         // Validar si el accessToken ha expirado
-        if (authService.isTokenExpired(session.getAccessToken())) {
-            System.out.println("Access token expired for UUID: " + uuid);
-            String newAccessToken = authService.refreshAccessToken(session.getRefreshToken());
-            tokenService.updateAccessToken(uuid, newAccessToken);
+        if (authService.isTokenExpired(session)) {
+            try {
+                String newAccessToken = authService.refreshAccessToken(session.getRefreshToken());
+                session.setAccessToken(newAccessToken);
+                session.setTokenAcquiredTime(System.currentTimeMillis());
+                tokenService.updateSession(uuid, session);
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Usamos SC_UNAUTHORIZED directamente
+                response.getWriter().write("Unauthorized: Unable to refresh access token");
+                return;
+            }
         }
 
         filterChain.doFilter(request, response);
     }
+
 }

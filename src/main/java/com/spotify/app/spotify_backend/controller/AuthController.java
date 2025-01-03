@@ -47,7 +47,7 @@ public class AuthController {
         // Generar un UUID único para esta sesión
         String uuid = UUID.randomUUID().toString();
 
-        // Guardar la sesión en TokenService
+        // Guardar la sesión en TokenService con la marca de tiempo actual
         tokenService.saveSession(uuid, tokenResponse.getAccessToken(), tokenResponse.getRefreshToken());
 
         // Crear la cookie con el UUID

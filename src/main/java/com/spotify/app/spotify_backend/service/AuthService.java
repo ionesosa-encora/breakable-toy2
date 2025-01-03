@@ -1,6 +1,8 @@
 package com.spotify.app.spotify_backend.service;
 
 import com.spotify.app.spotify_backend.dto.TokenResponse;
+import com.spotify.app.spotify_backend.model.UserSession;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -60,8 +62,10 @@ public class AuthService {
     }
 
     // Validar si el accessToken ha expirado
-    public boolean isTokenExpired(String accessToken) {
-        // Implementación futura si hay un campo "exp" en el token
-        return false; // Cambiar esta lógica si es necesario
+    public boolean isTokenExpired(UserSession session) {
+        long currentTimeMillis = System.currentTimeMillis();
+        long tokenAgeMillis = currentTimeMillis - session.getTokenAcquiredTime();
+        long tokenAgeSeconds = tokenAgeMillis / 1000;
+        return tokenAgeSeconds >= 3600; // 3600 segundos = 1 hora
     }
 }

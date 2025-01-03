@@ -7,26 +7,22 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class TokenService {
-
     private final ConcurrentHashMap<String, UserSession> tokenStore = new ConcurrentHashMap<>();
 
-    // Guardar una nueva sesión usando el UUID
     public void saveSession(String uuid, String accessToken, String refreshToken) {
-        tokenStore.put(uuid, new UserSession(accessToken, refreshToken));
-        System.out.println("Session stored for UUID: " + uuid);
+        long currentTimeMillis = System.currentTimeMillis();
+        UserSession session = new UserSession(accessToken, refreshToken, currentTimeMillis);
+        tokenStore.put(uuid, session);
+        System.out.println("Session saved for UUID: " + uuid);
+        System.out.println("Current tokenStore content: " + tokenStore);
     }
 
-    // Obtener la sesión por UUID
     public UserSession getSession(String uuid) {
         return tokenStore.get(uuid);
     }
 
-    // Actualizar el accessToken en una sesión existente
-    public void updateAccessToken(String uuid, String newAccessToken) {
-        UserSession session = tokenStore.get(uuid);
-        if (session != null) {
-            session.setAccessToken(newAccessToken);
-            System.out.println("Updated accessToken for UUID: " + uuid);
-        }
+    public void updateSession(String uuid, UserSession updatedSession) {
+        tokenStore.put(uuid, updatedSession);
+        System.out.println("Session updated for UUID: " + uuid);
     }
 }
