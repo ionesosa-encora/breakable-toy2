@@ -32,7 +32,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         
         // Permitir acceso sin restricciones a las rutas de login y callback
         String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/auth/spotify/login") || requestURI.startsWith("/auth/spotify/callback")) {
+        if (requestURI.equals("/") || requestURI.startsWith("/auth/spotify/login") || requestURI.startsWith("/auth/spotify/callback")) {
             filterChain.doFilter(request, response);
             return;
         }

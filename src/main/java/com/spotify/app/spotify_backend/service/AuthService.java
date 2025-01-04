@@ -6,9 +6,14 @@ import com.spotify.app.spotify_backend.model.UserSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -25,22 +30,40 @@ public class AuthService {
 
     // Intercambiar el código por un TokenResponse
     public TokenResponse exchangeCodeForTokens(String code) {
-        RestTemplate restTemplate = new RestTemplate();
         String url = "https://accounts.spotify.com/api/token";
-
+    
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(clientId, clientSecret);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        String body = "grant_type=authorization_code&code=" + code + "&redirect_uri=" + redirectUri;
-
-        HttpEntity<String> request = new HttpEntity<>(body, headers);
-
-        // Usar TokenResponse para mapear la respuesta JSON
-        ResponseEntity<TokenResponse> response = restTemplate.postForEntity(url, request, TokenResponse.class);
-
-        return response.getBody();
+        headers.setBasicAuth(clientId, clientSecret);
+    
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", "authorization_code");
+        body.add("code", code);
+        body.add("redirect_uri", redirectUri);
+    
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
+    
+        try {
+            // Inicializar RestTemplate localmente
+            RestTemplate restTemplate = new RestTemplate();
+    
+            ResponseEntity<TokenResponse> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                request,
+                TokenResponse.class
+            );
+    
+            return response.getBody();
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+                throw new RuntimeException("Invalid authorization code or code expired. Please try logging in again.");
+            } else {
+                throw new RuntimeException("Error during token exchange: " + e.getMessage());
+            }
+        }
     }
+    
 
     // Refrescar el accessToken
     public String refreshAccessToken(String refreshToken) {
