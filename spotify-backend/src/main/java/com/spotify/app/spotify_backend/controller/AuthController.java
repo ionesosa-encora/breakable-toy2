@@ -29,6 +29,9 @@ public class AuthController {
     @Value("${spotify.redirect-uri}")
     private String redirectUri;
 
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     @GetMapping("/login")
     public ResponseEntity<Void> login() {
         String authorizationUrl = "https://accounts.spotify.com/authorize?" +
@@ -52,14 +55,15 @@ public class AuthController {
 
         // Crear la cookie con el UUID
         ResponseCookie uuidCookie = ResponseCookie.from("sessionUUID", uuid)
-                .httpOnly(true)
+                .httpOnly(false)
                 .secure(false) // Cambiar a true en producción
                 .path("/")
                 .maxAge(3600) // 1 hora
                 .build();
 
-        return ResponseEntity.ok()
+            return ResponseEntity.status(302)
                 .header(HttpHeaders.SET_COOKIE, uuidCookie.toString())
-                .body("Session created successfully");
+                .location(URI.create(frontendUrl)) // Usar la variable inyectada
+                .build();
     }
 }

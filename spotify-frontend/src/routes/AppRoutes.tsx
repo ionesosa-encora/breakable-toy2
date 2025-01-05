@@ -5,21 +5,58 @@ import DashboardPage from '../pages/DashboardPage';
 import SearchPage from '../pages/SearchPage';
 import ArtistPage from '../pages/ArtistPage';
 import AlbumPage from '../pages/AlbumPage';
+import ProtectedRoute from '../components/ProtectedRoute'; // Importamos ProtectedRoute
+import { AuthProvider } from '../context/AuthContext'; // Importamos el AuthProvider solo para rutas protegidas
 
-// Componente principal de rutas
 const AppRoutes: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* Ruta del login */}
+        {/* Ruta pública */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
 
         {/* Rutas protegidas */}
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/artist/:id" element={<ArtistPage />} />
-        <Route path="/album/:id" element={<AlbumPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <AuthProvider> 
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            </AuthProvider>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <AuthProvider> 
+              <ProtectedRoute>
+                <SearchPage />
+              </ProtectedRoute>
+            </AuthProvider>
+          }
+        />
+        <Route
+          path="/artist/:id"
+          element={
+            <AuthProvider> 
+              <ProtectedRoute>
+                <ArtistPage />
+              </ProtectedRoute>
+            </AuthProvider>
+          }
+        />
+        <Route
+          path="/album/:id"
+          element={
+            <AuthProvider> 
+              <ProtectedRoute>
+                <AlbumPage />
+              </ProtectedRoute>
+            </AuthProvider>
+          }
+        />
 
         {/* Ruta por defecto (404) */}
         <Route path="*" element={<h1>404 - Página no encontrada</h1>} />

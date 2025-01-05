@@ -1,25 +1,13 @@
-import React from "react";
+import React from 'react';
 
 const LoginButton: React.FC = () => {
-  const handleLogin = async () => {
-    try {
-      // Llamar al backend para iniciar el login
-      const response = await fetch("http://localhost:8080/auth/spotify/login", {
-        method: "GET",
-        redirect: "follow", 
-      });
-
-      if (response.redirected) {
-        window.location.href = response.url; // Asegurarse de redirigir al usuario
-      }
-    } catch (error) {
-      console.error("Error during login process:", error);
-    }
+  const handleLogin = () => {
+    window.location.href = '/auth/spotify/login'; // Redirige al endpoint de login en el backend
   };
 
   return (
     <button onClick={handleLogin} className="login-button">
-      Login to Spotify
+      Login with Spotify
     </button>
   );
 };
