@@ -1,0 +1,604 @@
+/* Variables generales */
+:root {
+  --primary-color: #1db954;
+  --secondary-color: #191414;
+  --text-color: #ffffff;
+  --font-family: 'Arial', sans-serif;
+  --card-background: #2a2a2a;
+  --card-text-color: #b3b3b3;
+  --track-item-border: #444;
+  --subtle-text-color: #888;
+}
+
+/* Estilos globales */
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
+/* Contenedor General */
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Títulos Generales */
+h1, h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* GRID GENERAL */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+/* Card General */
+.card {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  margin: 12px 0;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: var(--subtle-text-color);
+  margin: 8px 0;
+}
+
+/* Artist Header */
+.artist-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Aseguramos que la imagen y texto estén alineados */
+  gap: 20px;
+  padding: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.artist-header__image-container {
+  flex-shrink: 0;
+}
+
+.artist-header__image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.artist-header__info {
+  flex-grow: 1;
+  text-align: left; /* Aseguramos que el texto se alinee a la izquierda */
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrar verticalmente */
+}
+
+.artist-header__name {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: left; /* Aseguramos que el texto se alinee a la izquierda */
+  margin: 0;
+}
+
+.artist-header__name {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+  text-align: left; /* Centramos específicamente el texto */
+  width: 100%; /* Aseguramos que el texto ocupe todo el ancho disponible */
+}
+
+.artist-header__followers {
+  font-size: 1rem;
+  color: var(--subtle-text-color);
+  margin: 5px 0;
+}
+
+.artist-header__genres {
+  font-size: 1rem;
+  color: #777;
+  margin: 5px 0;
+}
+
+/* Top Tracks */
+.top-tracks {
+  margin: 20px 0;
+  background-color: var(--secondary-color);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.top-tracks__list {
+  list-style: none;
+  padding: 0;
+}
+
+.top-tracks__item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--track-item-border);
+  gap: 10px;
+}
+
+.top-tracks__album-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.top-tracks__info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-tracks__name {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.top-tracks__duration {
+  font-size: 0.85rem;
+  color: var(--subtle-text-color);
+  margin: 3px;
+}
+
+/* Albums Grid */
+.albums-grid {
+  padding: 20px;
+  text-align: center;
+}
+
+.albums-grid__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+/* Album Card */
+.album-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  color: #000000;
+}
+
+.album-card__image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.album-card__name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  color: #000000;
+}
+
+.album-card__release-date {
+  font-size: 0.9rem;
+  color: #333333;
+}
+
+/* Artist Page */
+.artist-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Dashboard Page */
+.dashboard-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.album-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.album-header__image-container {
+  flex-shrink: 0;
+}
+
+.album-header__image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.album-header__info {
+  flex-grow: 1;
+}
+
+.album-header__name {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: left;
+  margin: 0;
+}
+
+.album-header__details,
+.album-header__artist {
+  font-size: 1rem;
+  color: var(--subtle-text-color);
+  margin: 5px 0;
+}
+
+.track-list {
+  margin: 20px 0;
+}
+
+.track-list__table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.track-list__table th,
+.track-list__table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--track-item-border);
+}
+
+.track-list__table th {
+  color: var(--subtle-text-color);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.track-list__table td {
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+/* Album Header */
+.album-header {
+  display: flex;
+  align-items: center;
+  gap: 30px; /* Más espacio entre la imagen y la información */
+  padding: 30px; /* Más espacio alrededor del encabezado */
+  border-bottom: 1px solid #444;
+}
+
+.album-header__image-container {
+  flex-shrink: 0;
+}
+
+.album-header__image {
+  width: 220px; /* Tamaño más grande para mayor claridad */
+  height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.album-header__info {
+  flex-grow: 1;
+}
+
+.album-header__name {
+  font-size: 2.4rem; /* Tamaño más grande para el nombre */
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+
+.album-header__details {
+  font-size: 1.2rem; /* Aumentar tamaño de texto */
+  color: var(--subtle-text-color);
+  margin: 5px 0;
+}
+
+.album-header__artist {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin: 10px 0;
+}
+
+/* Track List */
+.track-list {
+  margin: 40px 0; /* Más espacio entre el encabezado y la lista */
+}
+
+.track-list__table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.track-list__table th,
+.track-list__table td {
+  padding: 15px; /* Espaciado más amplio */
+  border-bottom: 1px solid var(--track-item-border);
+}
+
+.track-list__table th {
+  color: var(--subtle-text-color);
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.track-list__table td {
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+/* Album Card */
+.album-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  color: #000000;
+  transition: transform 0.2s ease;
+}
+
+.album-card:hover {
+  transform: scale(1.05);
+}
+
+.album-card__image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px; /* Más espacio debajo de la imagen */
+}
+
+.album-card__name {
+  font-size: 1.4rem; /* Más grande para destacar el nombre */
+  font-weight: bold;
+  margin: 10px 0;
+  color: #000000;
+}
+
+.album-card__release-date {
+  font-size: 1rem;
+  color: #555555;
+}
+
+/* Login Page Styles */
+.login-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  text-align: center;
+}
+
+.login-page__title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.login-page__subtitle {
+  font-size: 1.2rem;
+  color: var(--subtle-text-color);
+  margin-bottom: 30px;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* Login Button Styles */
+.login-button {
+  padding: 15px 30px;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-button:hover {
+  background-color: #14833b;
+  transform: scale(1.05);
+}
+
+.login-button:active {
+  background-color: #0f5e2b;
+}
+
+
+.header {
+  display: flex;
+  justify-content: space-between; /* Espaciar el título y el botón */
+  align-items: center; /* Alinear verticalmente */
+  padding: 10px 20px;
+  background-color: #191414; /* Fondo oscuro */
+  border-bottom: 1px solid #444; /* Línea separadora */
+  position: sticky; /* Fijo en la parte superior */
+  top: 0;
+  z-index: 100; /* Asegura que esté sobre otros elementos */
+}
+
+.header__title {
+  flex-grow: 1; /* Toma todo el espacio disponible para centrar */
+  text-align: center; /* Centra el título en su contenedor */
+  color: #1db954; /* Verde de Spotify */
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.header__logout {
+  background-color: #1db954; /* Verde de Spotify */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.header__logout:hover {
+  background-color: #14833b; /* Verde más oscuro */
+}
+
+
+/* SearchInput Styles */
+.search-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;
+  max-width: 600px; /* Centrar y limitar el ancho */
+}
+
+.search-input__field {
+  flex: 1;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-input__field:focus {
+  border-color: var(--primary-color); /* Usar el color primario para el foco */
+  box-shadow: 0 0 5px var(--primary-color);
+}
+
+.search-input__button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-input__button:hover {
+  background-color: #14833b; /* Color más oscuro al pasar el cursor */
+}
+
+.search-input__button:active {
+  transform: scale(0.98); /* Pequeño efecto de "click" */
+}
+
+.track-search {
+  margin: 20px 0;
+}
+
+.track-search__list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.track-search__item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--track-item-border);
+  border-radius: 8px;
+  background-color: var(--card-background);
+  gap: 16px;
+}
+
+.track-search__album-image {
+  width: 64px;
+  height: 64px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.track-search__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.track-search__name {
+  font-size: 1rem;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.track-search__artist {
+  font-size: 0.9rem;
+  color: var(--subtle-text-color);
+}
+
+.track-search__album {
+  font-size: 0.8rem;
+  color: var(--subtle-text-color);
+  margin: 3px 0;
+}
+
+.track-search__duration {
+  font-size: 0.8rem;
+  color: var(--subtle-text-color);
+}
+
+
+.search-page__title {
+  margin-bottom: 10px; /* Reduce el margen inferior */
+  font-size: 1.8rem; /* Ajustar tamaño del texto si es necesario */
+  text-align: left; /* Asegurar alineación consistente */
+}
+
+
+.search-section__title {
+  margin-bottom: 10px; /* Espaciado uniforme */
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--text-color); /* Usa el color que estés utilizando en el tema */
+}

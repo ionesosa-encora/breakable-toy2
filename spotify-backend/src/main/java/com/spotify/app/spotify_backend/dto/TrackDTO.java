@@ -2,12 +2,15 @@ package com.spotify.app.spotify_backend.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TrackDTO {
     private String id;
     private String name;
     private List<ArtistDTO> artists; // Lista de artistas asociados a la pista
     private AlbumDTO album;          // Información del álbum al que pertenece la pista
     private int popularity;          // Popularidad de la pista (0-100)
+    @JsonProperty("duration_ms") 
     private int durationMs;          // Duración de la pista en milisegundos
     private String previewUrl;       // URL para una vista previa de 30 segundos de la pista
 

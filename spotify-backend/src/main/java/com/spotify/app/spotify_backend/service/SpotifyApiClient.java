@@ -2,20 +2,23 @@ package com.spotify.app.spotify_backend.service;
 
 import com.spotify.app.spotify_backend.dto.AlbumDTO;
 import com.spotify.app.spotify_backend.dto.ArtistDTO;
+import com.spotify.app.spotify_backend.dto.PaginatedResultDTO;
 import com.spotify.app.spotify_backend.dto.SearchResponseDTO;
 import com.spotify.app.spotify_backend.dto.TopArtistsResponseDTO;
 import com.spotify.app.spotify_backend.dto.TopTracksResponseDTO;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class SpotifyApiClient {
@@ -25,21 +28,16 @@ public class SpotifyApiClient {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    // Obtener los artistas principales
     public TopArtistsResponseDTO getTopArtists(String accessToken) {
-        RestTemplate restTemplate = new RestTemplate();
         String url = spotifyApiBaseUrl + "/me/top/artists?limit=10";
 
-        // Configurar las cabeceras con el accessToken
-        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
 
-        // Hacer la solicitud GET a Spotify
-        org.springframework.http.HttpEntity<Void> entity = new org.springframework.http.HttpEntity<>(headers);
-        org.springframework.http.ResponseEntity<TopArtistsResponseDTO> response =
-                restTemplate.exchange(url, org.springframework.http.HttpMethod.GET, entity, TopArtistsResponseDTO.class);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+        ResponseEntity<TopArtistsResponseDTO> response = restTemplate.exchange(
+                url, HttpMethod.GET, entity, TopArtistsResponseDTO.class);
 
-        // Retornar la respuesta deserializada en TopArtistsResponseDTO
         return response.getBody();
     }
 
@@ -49,16 +47,11 @@ public class SpotifyApiClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
     
-        HttpEntity<Void> request = new HttpEntity<>(headers);
-    
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
         ResponseEntity<TopTracksResponseDTO> response = restTemplate.exchange(
-            url,
-            HttpMethod.GET,
-            request,
-            TopTracksResponseDTO.class
-        );
+                url, HttpMethod.GET, entity, TopTracksResponseDTO.class);
     
-        return response.getBody();
+        return response.getBody(); // Devuelve el TopTracksResponseDTO completo
     }
     
 
@@ -68,34 +61,27 @@ public class SpotifyApiClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
 
-        HttpEntity<Void> request = new HttpEntity<>(headers);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+        ResponseEntity<ArtistDTO> response = restTemplate.exchange(
+                url, HttpMethod.GET, entity, ArtistDTO.class);
 
-        try {
-            ResponseEntity<ArtistDTO> response = restTemplate.exchange(url, HttpMethod.GET, request, ArtistDTO.class);
-            return response.getBody();
-        } catch (Exception e) {
-            throw new RuntimeException("Error fetching artist data from Spotify API: " + e.getMessage());
-        }
+        return response.getBody();
     }
 
     public AlbumDTO getAlbumById(String albumId, String accessToken) {
         String url = spotifyApiBaseUrl + "/albums/" + albumId;
 
-        // Configurar los encabezados de la solicitud
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
-        HttpEntity<Void> request = new HttpEntity<>(headers);
 
-        // Realizar la solicitud a la API de Spotify
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<AlbumDTO> response = restTemplate.exchange(url, org.springframework.http.HttpMethod.GET, request, AlbumDTO.class);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+        ResponseEntity<AlbumDTO> response = restTemplate.exchange(
+                url, HttpMethod.GET, entity, AlbumDTO.class);
 
-        // Devolver el álbum
         return response.getBody();
     }
 
     public SearchResponseDTO search(String query, String type, String accessToken, int limit, int offset) {
-        // Construir la URL de búsqueda
         URI url = UriComponentsBuilder.fromHttpUrl(spotifyApiBaseUrl + "/search")
                 .queryParam("q", query)
                 .queryParam("type", type)
@@ -104,23 +90,46 @@ public class SpotifyApiClient {
                 .build()
                 .toUri();
 
-        // Configurar los headers
-        var headers = new org.springframework.http.HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
 
-        // Crear la solicitud
-        var entity = new org.springframework.http.HttpEntity<>(headers);
-
-        // Realizar la solicitud a la API de Spotify
-        var response = restTemplate.exchange(
-            url,
-            org.springframework.http.HttpMethod.GET,
-            entity,
-            SearchResponseDTO.class
-        );
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+        ResponseEntity<SearchResponseDTO> response = restTemplate.exchange(
+                url, HttpMethod.GET, entity, SearchResponseDTO.class);
 
         return response.getBody();
     }
 
+    // Nuevo método: Obtener los álbums de un artista
+    public List<AlbumDTO> getArtistAlbums(String artistId, String accessToken) {
+        URI url = UriComponentsBuilder.fromHttpUrl(spotifyApiBaseUrl + "/artists/" + artistId + "/albums")
+                .queryParam("limit", 10)
+                .build()
+                .toUri();
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+        ResponseEntity<PaginatedResultDTO<AlbumDTO>> response = restTemplate.exchange(
+                url, HttpMethod.GET, entity, new ParameterizedTypeReference<PaginatedResultDTO<AlbumDTO>>() {});
+
+        return response.getBody().getItems();
+    }
+
+    public TopTracksResponseDTO getArtistTopTracks(String artistId, String accessToken) {
+        URI url = UriComponentsBuilder.fromHttpUrl(spotifyApiBaseUrl + "/artists/" + artistId + "/top-tracks")
+                .queryParam("market", "US") // Parametro requerido por la API de Spotify
+                .build()
+                .toUri();
+    
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+    
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+        ResponseEntity<TopTracksResponseDTO> response = restTemplate.exchange(
+                url, HttpMethod.GET, entity, TopTracksResponseDTO.class);
+    
+        return response.getBody();
+    }
 }

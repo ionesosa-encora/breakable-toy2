@@ -3,6 +3,10 @@ package com.spotify.app.spotify_backend.controller;
 import com.spotify.app.spotify_backend.dto.TokenResponse;
 import com.spotify.app.spotify_backend.service.AuthService;
 import com.spotify.app.spotify_backend.service.TokenService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +18,7 @@ import java.net.URI;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/auth/spotify")
+@RequestMapping("/api/auth/spotify")
 public class AuthController {
 
     @Autowired
@@ -65,5 +69,18 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, uuidCookie.toString())
                 .location(URI.create(frontendUrl)) // Usar la variable inyectada
                 .build();
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        // Clear the session (you may also want to invalidate the session on the backend)
+        ResponseCookie clearCookie = ResponseCookie.from("sessionUUID", "")
+                .path("/")
+                .maxAge(0) // Deletes the cookie
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, clearCookie.toString())
+                .body("Logged out successfully");
     }
 }

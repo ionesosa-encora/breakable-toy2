@@ -8,7 +8,8 @@ public class ArtistDTO {
     private int popularity;
     private List<ImageDTO> images;
     private String uri;
-    private FollowersDTO followers; // Información de seguidores del artista
+    private FollowersDTO followers; 
+    private List<String> genres;
 
     // Getters y Setters
     public String getId() {
@@ -57,5 +58,13 @@ public class ArtistDTO {
 
     public void setFollowers(FollowersDTO followers) {
         this.followers = followers;
+    }
+
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<String> genres) {
+        this.genres = genres;
     }
 }

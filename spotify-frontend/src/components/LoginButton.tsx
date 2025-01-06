@@ -2,7 +2,7 @@ import React from 'react';
 
 const LoginButton: React.FC = () => {
   const handleLogin = () => {
-    window.location.href = '/auth/spotify/login'; // Redirige al endpoint de login en el backend
+    window.location.href = '/api/auth/spotify/login';
   };
 
   return (

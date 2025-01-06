@@ -1,23 +1,26 @@
 package com.spotify.app.spotify_backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import java.util.List;
 
 public class TopTracksResponseDTO {
-    private List<TrackDTO> items; // Lista de pistas principales
-    private int total;            // Número total de pistas
-    private int limit;            // Límite por página
-    private int offset;           // Desplazamiento actual
-    private String href;          // URL de la solicitud actual
-    private String next;          // URL para la próxima página
-    private String previous;      // URL para la página anterior
+    @JsonAlias({"items", "tracks"}) // Mapea tanto "items" como "tracks" al mismo atributo
+    private List<TrackDTO> tracks;  // Lista de pistas principales
+
+    private int total;
+    private int limit;
+    private int offset;
+    private String href;
+    private String next;
+    private String previous;
 
     // Getters y Setters
-    public List<TrackDTO> getItems() {
-        return items;
+    public List<TrackDTO> getTracks() {
+        return tracks;
     }
 
-    public void setItems(List<TrackDTO> items) {
-        this.items = items;
+    public void setTracks(List<TrackDTO> tracks) {
+        this.tracks = tracks;
     }
 
     public int getTotal() {

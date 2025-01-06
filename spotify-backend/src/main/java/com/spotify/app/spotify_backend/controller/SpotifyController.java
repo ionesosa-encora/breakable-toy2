@@ -13,10 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+
+
 @RestController
+@RequestMapping("/api")
 public class SpotifyController {
 
     @Autowired
@@ -79,6 +85,32 @@ public class SpotifyController {
             return ResponseEntity.status(401).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching artist data: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/artists/{id}/top-tracks")
+    public ResponseEntity<?> getArtistTopTracks(@PathVariable String id, HttpServletRequest request) {
+        try {
+            String accessToken = sessionUtil.validateSession(request).getAccessToken();
+            TopTracksResponseDTO topTracks = spotifyApiClient.getArtistTopTracks(id, accessToken);
+            return ResponseEntity.ok(topTracks);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching top tracks: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/artists/{id}/albums")
+    public ResponseEntity<?> getArtistAlbums(@PathVariable String id, HttpServletRequest request) {
+        try {
+            String accessToken = sessionUtil.validateSession(request).getAccessToken();
+            List<AlbumDTO> albums = spotifyApiClient.getArtistAlbums(id, accessToken);
+            return ResponseEntity.ok(albums);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching albums: " + e.getMessage());
         }
     }
 

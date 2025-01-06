@@ -5,64 +5,49 @@ import DashboardPage from '../pages/DashboardPage';
 import SearchPage from '../pages/SearchPage';
 import ArtistPage from '../pages/ArtistPage';
 import AlbumPage from '../pages/AlbumPage';
-import ProtectedRoute from '../components/ProtectedRoute'; // Importamos ProtectedRoute
-import { AuthProvider } from '../context/AuthContext'; // Importamos el AuthProvider solo para rutas protegidas
+import ProtectedRoute from '../components/ProtectedRoute';
+import Header from '../components/Header';
+import { AuthProvider } from '../context/AuthContext';
 
-const AppRoutes: React.FC = () => {
-  return (
-    <Router>
-      <Routes>
-        {/* Ruta pública */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} />
+const ProtectedRouteWithHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <>
+    <div className="app-header"> 
+      <Header />
+    </div>
+    <main className="main-container">{children}</main>
+  </>
+);
 
-        {/* Rutas protegidas */}
-        <Route
-          path="/dashboard"
-          element={
-            <AuthProvider> 
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            </AuthProvider>
-          }
-        />
-        <Route
-          path="/search"
-          element={
-            <AuthProvider> 
-              <ProtectedRoute>
-                <SearchPage />
-              </ProtectedRoute>
-            </AuthProvider>
-          }
-        />
-        <Route
-          path="/artist/:id"
-          element={
-            <AuthProvider> 
-              <ProtectedRoute>
-                <ArtistPage />
-              </ProtectedRoute>
-            </AuthProvider>
-          }
-        />
-        <Route
-          path="/album/:id"
-          element={
-            <AuthProvider> 
-              <ProtectedRoute>
-                <AlbumPage />
-              </ProtectedRoute>
-            </AuthProvider>
-          }
-        />
+const ProtectedRouteWithAuth = ({ element }: { element: React.ReactElement }) => (
+  <AuthProvider>
+    <ProtectedRoute>{element}</ProtectedRoute>
+  </AuthProvider>
+);
 
-        {/* Ruta por defecto (404) */}
-        <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
-      </Routes>
-    </Router>
-  );
-};
+const AppRoutes: React.FC = () => (
+  <Router>
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/dashboard"
+        element={<ProtectedRouteWithAuth element={<ProtectedRouteWithHeader><DashboardPage /></ProtectedRouteWithHeader>} />}
+      />
+      <Route
+        path="/search"
+        element={<ProtectedRouteWithAuth element={<ProtectedRouteWithHeader><SearchPage /></ProtectedRouteWithHeader>} />}
+      />
+      <Route
+        path="/artists/:id"
+        element={<ProtectedRouteWithAuth element={<ProtectedRouteWithHeader><ArtistPage /></ProtectedRouteWithHeader>} />}
+      />
+      <Route
+        path="/album/:id"
+        element={<ProtectedRouteWithAuth element={<ProtectedRouteWithHeader><AlbumPage /></ProtectedRouteWithHeader>} />}
+      />
+      <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
+    </Routes>
+  </Router>
+);
 
 export default AppRoutes;
