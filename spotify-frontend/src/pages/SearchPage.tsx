@@ -28,7 +28,7 @@ const SearchPage: React.FC = () => {
             (data.artists.items || []).slice(0, 10).map((artist: any) => ({
               id: artist.id,
               name: artist.name,
-              imageUrl: artist.images?.[0]?.url || "", // Obtener la primera imagen disponible
+              imageUrl: artist.images?.[0]?.url || "", 
               followers: artist.followers?.total || 0,
               genres: artist.genres || [],
             }))
@@ -39,7 +39,7 @@ const SearchPage: React.FC = () => {
             (data.albums.items || []).slice(0, 10).map((album: any) => ({
               id: album.id,
               name: album.name,
-              imageUrl: album.images?.[0]?.url || "", // Obtener la primera imagen disponible
+              imageUrl: album.images?.[0]?.url || "", 
               release_date: album.release_date,
             }))
           );
@@ -50,7 +50,7 @@ const SearchPage: React.FC = () => {
               id: track.id,
               name: track.name,
               duration_ms: track.duration_ms,
-              albumImageUrl: track.album?.images?.[0]?.url || "", // Obtener la imagen del álbum
+              albumImageUrl: track.album?.images?.[0]?.url || "", 
               albumName: track.album?.name || "Unknown Album",
               artistName: track.artists?.[0]?.name || "Unknown Artist",
             }))

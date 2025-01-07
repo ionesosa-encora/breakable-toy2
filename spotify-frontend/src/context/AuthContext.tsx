@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getCookie } from '../utils/cookies'; // Importar la función para leer cookies
+import { getCookie } from '../utils/cookies'; 
 
 // Interfaz para definir los valores que manejará el AuthContext
 interface AuthContextType {
@@ -28,12 +28,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     // Leer la cookie y establecer el UUID al montar el componente
     useEffect(() => {
         const storedUuid = getCookie('sessionUUID'); // Leer la cookie usando la utilidad
-        console.log('Cookie leída desde AuthProvider:', storedUuid); // Debug para verificar la cookie
         if (storedUuid) {
-            console.log("aqui se esta seteando la uuid")
             setUUID(storedUuid); // Establecer el UUID en el estado del contexto
         }
-        console.log('uuid supuesta almacenada', uuid)
     }, []); // Solo se ejecuta una vez, al montar
 
     return (

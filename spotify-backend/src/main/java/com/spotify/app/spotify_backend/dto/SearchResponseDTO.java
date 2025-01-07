@@ -1,9 +1,5 @@
 package com.spotify.app.spotify_backend.dto;
 
-/**
- * DTO para encapsular la respuesta de búsqueda de la API de Spotify.
- * Contiene las secciones de artistas, álbumes y canciones con información de paginación.
- */
 public class SearchResponseDTO {
     private PaginatedResultDTO<ArtistDTO> artists; // Encapsula la lista de artistas con paginación
     private PaginatedResultDTO<AlbumDTO> albums;  // Encapsula la lista de álbumes con paginación

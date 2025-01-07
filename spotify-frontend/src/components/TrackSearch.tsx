@@ -4,9 +4,9 @@ interface Track {
   id: string;
   name: string;
   duration_ms: number;
-  albumImageUrl: string; // Imagen del álbum
-  albumName: string; // Nombre del álbum
-  artistName: string; // Nombre del artista
+  albumImageUrl: string; 
+  albumName: string; 
+  artistName: string; 
 }
 
 interface TrackSearchProps {

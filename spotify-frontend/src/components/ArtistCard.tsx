@@ -24,8 +24,8 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ id, name, imageUrl, followers, 
   return (
     <div 
       key={id} 
-      className="card clickable-card" // Agregar clase para estilos
-      onClick={handleCardClick} // Redirigir al hacer clic
+      className="card clickable-card" 
+      onClick={handleCardClick} 
     >
       <img src={imageUrl || 'https://via.placeholder.com/150'} alt={name} className="card-image" />
       <h3 className="card-title">{name}</h3>

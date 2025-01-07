@@ -28,7 +28,6 @@ interface Album {
 
 const ArtistPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  console.log('Artist ID:', id);
 
   const [artist, setArtist] = useState<Artist | null>(null);
   const [topTracks, setTopTracks] = useState<Track[]>([]);
@@ -53,7 +52,6 @@ const ArtistPage: React.FC = () => {
           followers: artistData.followers.total,
           genres: artistData.genres || [],
         });
-        console.log("artisResponse: ", artistData.id)
 
         // Fetch canciones populares
         const topTracksResponse = await fetch(`/api/artists/${id}/top-tracks`);

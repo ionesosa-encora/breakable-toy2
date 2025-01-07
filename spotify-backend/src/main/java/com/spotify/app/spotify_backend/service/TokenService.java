@@ -13,8 +13,6 @@ public class TokenService {
         long currentTimeMillis = System.currentTimeMillis();
         UserSession session = new UserSession(accessToken, refreshToken, currentTimeMillis);
         tokenStore.put(uuid, session);
-        System.out.println("Session saved for UUID: " + uuid);
-        System.out.println("Current tokenStore content: " + tokenStore);
     }
 
     public UserSession getSession(String uuid) {
@@ -23,6 +21,5 @@ public class TokenService {
 
     public void updateSession(String uuid, UserSession updatedSession) {
         tokenStore.put(uuid, updatedSession);
-        System.out.println("Session updated for UUID: " + uuid);
     }
 }

@@ -76,7 +76,7 @@ h1, h2 {
 .artist-header {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Aseguramos que la imagen y texto estén alineados */
+  justify-content: flex-start; 
   gap: 20px;
   padding: 20px;
   border-bottom: 1px solid #ccc;
@@ -95,17 +95,17 @@ h1, h2 {
 
 .artist-header__info {
   flex-grow: 1;
-  text-align: left; /* Aseguramos que el texto se alinee a la izquierda */
+  text-align: left; 
   margin-left: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centrar verticalmente */
+  justify-content: center;
 }
 
 .artist-header__name {
   font-size: 2rem;
   font-weight: bold;
-  text-align: left; /* Aseguramos que el texto se alinee a la izquierda */
+  text-align: left; 
   margin: 0;
 }
 
@@ -113,8 +113,8 @@ h1, h2 {
   font-size: 2rem;
   font-weight: bold;
   margin: 0;
-  text-align: left; /* Centramos específicamente el texto */
-  width: 100%; /* Aseguramos que el texto ocupe todo el ancho disponible */
+  text-align: left; 
+  width: 100%; 
 }
 
 .artist-header__followers {
@@ -303,8 +303,8 @@ h1, h2 {
 .album-header {
   display: flex;
   align-items: center;
-  gap: 30px; /* Más espacio entre la imagen y la información */
-  padding: 30px; /* Más espacio alrededor del encabezado */
+  gap: 30px; 
+  padding: 30px; 
   border-bottom: 1px solid #444;
 }
 
@@ -313,7 +313,7 @@ h1, h2 {
 }
 
 .album-header__image {
-  width: 220px; /* Tamaño más grande para mayor claridad */
+  width: 220px; 
   height: 220px;
   object-fit: cover;
   border-radius: 8px;
@@ -324,13 +324,13 @@ h1, h2 {
 }
 
 .album-header__name {
-  font-size: 2.4rem; /* Tamaño más grande para el nombre */
+  font-size: 2.4rem; 
   font-weight: bold;
   margin: 0 0 10px 0;
 }
 
 .album-header__details {
-  font-size: 1.2rem; /* Aumentar tamaño de texto */
+  font-size: 1.2rem; 
   color: var(--subtle-text-color);
   margin: 5px 0;
 }
@@ -343,7 +343,7 @@ h1, h2 {
 
 /* Track List */
 .track-list {
-  margin: 40px 0; /* Más espacio entre el encabezado y la lista */
+  margin: 40px 0; 
 }
 
 .track-list__table {
@@ -354,7 +354,7 @@ h1, h2 {
 
 .track-list__table th,
 .track-list__table td {
-  padding: 15px; /* Espaciado más amplio */
+  padding: 15px; 
   border-bottom: 1px solid var(--track-item-border);
 }
 
@@ -391,11 +391,11 @@ h1, h2 {
   width: 100%;
   height: auto;
   border-radius: 8px;
-  margin-bottom: 15px; /* Más espacio debajo de la imagen */
+  margin-bottom: 15px; 
 }
 
 .album-card__name {
-  font-size: 1.4rem; /* Más grande para destacar el nombre */
+  font-size: 1.4rem; 
   font-weight: bold;
   margin: 10px 0;
   color: #000000;
@@ -457,27 +457,27 @@ h1, h2 {
 
 .header {
   display: flex;
-  justify-content: space-between; /* Espaciar el título y el botón */
-  align-items: center; /* Alinear verticalmente */
+  justify-content: space-between; 
+  align-items: center; 
   padding: 10px 20px;
-  background-color: #191414; /* Fondo oscuro */
-  border-bottom: 1px solid #444; /* Línea separadora */
-  position: sticky; /* Fijo en la parte superior */
+  background-color: #191414;
+  border-bottom: 1px solid #444; 
+  position: sticky; 
   top: 0;
-  z-index: 100; /* Asegura que esté sobre otros elementos */
+  z-index: 100; 
 }
 
 .header__title {
-  flex-grow: 1; /* Toma todo el espacio disponible para centrar */
-  text-align: center; /* Centra el título en su contenedor */
-  color: #1db954; /* Verde de Spotify */
+  flex-grow: 1; 
+  text-align: center; 
+  color: #1db954; 
   font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
 }
 
 .header__logout {
-  background-color: #1db954; /* Verde de Spotify */
+  background-color: #1db954; 
   color: white;
   border: none;
   border-radius: 4px;
@@ -486,7 +486,7 @@ h1, h2 {
 }
 
 .header__logout:hover {
-  background-color: #14833b; /* Verde más oscuro */
+  background-color: #14833b;
 }
 
 
@@ -497,7 +497,7 @@ h1, h2 {
   align-items: center;
   gap: 10px;
   margin: 20px auto;
-  max-width: 600px; /* Centrar y limitar el ancho */
+  max-width: 600px; 
 }
 
 .search-input__field {
@@ -511,7 +511,7 @@ h1, h2 {
 }
 
 .search-input__field:focus {
-  border-color: var(--primary-color); /* Usar el color primario para el foco */
+  border-color: var(--primary-color); 
   box-shadow: 0 0 5px var(--primary-color);
 }
 
@@ -527,11 +527,11 @@ h1, h2 {
 }
 
 .search-input__button:hover {
-  background-color: #14833b; /* Color más oscuro al pasar el cursor */
+  background-color: #14833b; 
 }
 
 .search-input__button:active {
-  transform: scale(0.98); /* Pequeño efecto de "click" */
+  transform: scale(0.98); 
 }
 
 .track-search {
@@ -592,37 +592,37 @@ h1, h2 {
 
 
 .search-page__title {
-  margin-bottom: 10px; /* Reduce el margen inferior */
-  font-size: 1.8rem; /* Ajustar tamaño del texto si es necesario */
-  text-align: left; /* Asegurar alineación consistente */
+  margin-bottom: 10px; 
+  font-size: 1.8rem; 
+  text-align: left; 
 }
 
 
 .search-section__title {
-  margin-bottom: 10px; /* Espaciado uniforme */
+  margin-bottom: 10px; 
   font-size: 1.8rem;
   font-weight: bold;
-  color: var(--text-color); /* Usa el color que estés utilizando en el tema */
+  color: var(--text-color); 
 }
 
 .header__dashboard {
-  background-color: var(--primary-color); /* Color primario */
-  color: var(--text-color); /* Texto blanco */
-  border: 2px solid var(--primary-color); /* Borde del mismo color que el botón */
+  background-color: var(--primary-color); 
+  color: var(--text-color); 
+  border: 2px solid var(--primary-color); 
   padding: 8px 15px;
-  border-radius: 25px; /* Bordes redondeados */
+  border-radius: 25px;
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
-  transition: all 0.3s ease; /* Transiciones suaves */
+  transition: all 0.3s ease; 
 }
 
 .header__dashboard:hover {
-  background-color: #1ed760; /* Verde más claro al pasar el mouse */
+  background-color: #1ed760;
   border-color: #1ed760;
 }
 
 .header__dashboard:focus {
   outline: none;
-  box-shadow: 0 0 10px rgba(30, 215, 96, 0.6); /* Efecto de enfoque */
+  box-shadow: 0 0 10px rgba(30, 215, 96, 0.6); 
 }
