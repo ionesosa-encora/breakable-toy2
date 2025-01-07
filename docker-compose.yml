@@ -1,0 +1,25 @@
+services:
+  backend:
+    build:
+      context: ./spotify-backend
+    container_name: spotify-backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./spotify-backend/src/main/resources/application.properties:/app/application.properties
+    networks:
+      - spotify-network
+
+  frontend:
+    build:
+      context: ./spotify-frontend
+      dockerfile: Dockerfile
+    container_name: spotify-frontend
+    ports:
+      - "80:80"
+    networks:
+      - spotify-network
+
+networks:
+  spotify-network:
+    driver: bridge

@@ -11,12 +11,17 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -28,6 +33,12 @@ public class SpotifyApiClient {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    @Retryable(
+        value = {HttpClientErrorException.TooManyRequests.class, HttpServerErrorException.class},
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 2000, multiplier = 2)
+    )
+    @Cacheable(value = "topArtists", key = "#accessToken")
     public TopArtistsResponseDTO getTopArtists(String accessToken) {
         String url = spotifyApiBaseUrl + "/me/top/artists?limit=10";
 
@@ -41,6 +52,12 @@ public class SpotifyApiClient {
         return response.getBody();
     }
 
+    @Retryable(
+        value = {HttpClientErrorException.TooManyRequests.class, HttpServerErrorException.class},
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 2000, multiplier = 2)
+    )
+    @Cacheable(value = "topTracks", key = "#accessToken")
     public TopTracksResponseDTO getTopTracks(String accessToken) {
         String url = spotifyApiBaseUrl + "/me/top/tracks?limit=10";
     
@@ -51,10 +68,15 @@ public class SpotifyApiClient {
         ResponseEntity<TopTracksResponseDTO> response = restTemplate.exchange(
                 url, HttpMethod.GET, entity, TopTracksResponseDTO.class);
     
-        return response.getBody(); // Devuelve el TopTracksResponseDTO completo
+        return response.getBody();
     }
-    
 
+    @Retryable(
+        value = {HttpClientErrorException.TooManyRequests.class, HttpServerErrorException.class},
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 2000, multiplier = 2)
+    )
+    @Cacheable(value = "artistById", key = "#artistId")
     public ArtistDTO getArtistById(String artistId, String accessToken) {
         String url = spotifyApiBaseUrl + "/artists/" + artistId;
 
@@ -68,6 +90,12 @@ public class SpotifyApiClient {
         return response.getBody();
     }
 
+    @Retryable(
+        value = {HttpClientErrorException.TooManyRequests.class, HttpServerErrorException.class},
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 2000, multiplier = 2)
+    )
+    @Cacheable(value = "albumById", key = "#albumId")
     public AlbumDTO getAlbumById(String albumId, String accessToken) {
         String url = spotifyApiBaseUrl + "/albums/" + albumId;
 
@@ -100,7 +128,12 @@ public class SpotifyApiClient {
         return response.getBody();
     }
 
-    // Nuevo método: Obtener los álbums de un artista
+    @Retryable(
+        value = {HttpClientErrorException.TooManyRequests.class, HttpServerErrorException.class},
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 2000, multiplier = 2)
+    )
+    @Cacheable(value = "artistAlbums", key = "#artistId")
     public List<AlbumDTO> getArtistAlbums(String artistId, String accessToken) {
         URI url = UriComponentsBuilder.fromHttpUrl(spotifyApiBaseUrl + "/artists/" + artistId + "/albums")
                 .queryParam("limit", 10)
@@ -117,6 +150,12 @@ public class SpotifyApiClient {
         return response.getBody().getItems();
     }
 
+    @Retryable(
+        value = {HttpClientErrorException.TooManyRequests.class, HttpServerErrorException.class},
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 2000, multiplier = 2)
+    )
+    @Cacheable(value = "artistTopTracks", key = "#artistId")
     public TopTracksResponseDTO getArtistTopTracks(String artistId, String accessToken) {
         URI url = UriComponentsBuilder.fromHttpUrl(spotifyApiBaseUrl + "/artists/" + artistId + "/top-tracks")
                 .queryParam("market", "US") // Parametro requerido por la API de Spotify

@@ -1,11 +1,29 @@
-HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Logs
+logs/
+*.log
 
-### STS ###
+# Gradle
+.gradle/
+build/
+
+# Java and Spring Boot
+*.jar
+*.war
+*.ear
+*.class
+
+# Environment variables
+application.properties
+application.yml
+.env
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# STS
 .apt_generated
 .classpath
 .factorypath
@@ -14,54 +32,24 @@ build/
 .springBeans
 .sts4-cache
 bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+# VS Code
 .vscode/
-
-
-# Gradle
-/.gradle
-/build/
-
-# IntelliJ IDEA
-.idea/
-*.iml
-*.ipr
-*.iws
 
 # MacOS
 .DS_Store
 
-# Logs
-*.log
-logs/
-
-# Java and Spring Boot
-*.jar
-*.war
-*.ear
-
-# VS Code
-.vscode/
-
-# Environment variables
-application.properties
-application.yml
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+*.swn
